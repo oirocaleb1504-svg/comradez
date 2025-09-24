@@ -13,7 +13,7 @@ st.markdown("""
             color: #000000; /* black text */
         }
         .stApp {
-            background: url("https://i.ibb.co/W5KzPzj/snack-pattern.png");
+            background: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dvending%2Bmachine&psig=AOvVaw3SRacUn12BjYLst03gSaWv&ust=1758783622453000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLiXw9rp8I8DFQAAAAAdAAAAABAE");
             background-size: 150px 150px;
             background-repeat: repeat;
             background-attachment: fixed;
@@ -100,3 +100,4 @@ st.warning(f"⚠️ Low Stock Alert: **{low_stock}** — restock soon!")
 # -------------------------------
 st.markdown("---")
 st.caption(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Comradez Vending Automation 🍊")
+
