@@ -2,10 +2,25 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import json
+import os
 
-# --- Default Password (can be changed in session) ---
-if "password" not in st.session_state:
-    st.session_state["password"] = "comradez123"  # default password
+CONFIG_FILE = "config.json"
+
+# --- Helper functions for config ---
+def load_config():
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, "r") as f:
+            return json.load(f)
+    else:
+        return {"password": "comradez123"}  # default
+
+def save_config(config):
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(config, f)
+
+# --- Load password from config ---
+config = load_config()
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
@@ -14,7 +29,7 @@ def login():
     st.title("🔐 Secure Login")
     pw_input = st.text_input("Enter Password", type="password")
     if st.button("Login"):
-        if pw_input == st.session_state["password"]:
+        if pw_input == config["password"]:
             st.session_state["authenticated"] = True
             st.success("✅ Access Granted")
         else:
@@ -29,7 +44,7 @@ def app():
     st.markdown("""
         <style>
             .stApp {
-                background-image: url("https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.pinimg.com%2F736x%2F62%2Fe6%2Faf%2F62e6afa541b8a7f36b56e748d01a2f6f.jpg&tbnid=7BpVA-JHw3OZLM&vet=10CAIQxiAoAGoXChMIgPjhhPDwjwMVAAAAAB0AAAAAEAc..i&imgrefurl=https%3A%2F%2Far.pinterest.com%2Fpin%2F573083121337237150%2F&docid=v-Kch5hifAPGBM&w=734&h=306&itg=1&q=dark%20images%20for%20websites&ved=0CAIQxiAoAGoXChMIgPjhhPDwjwMVAAAAAB0AAAAAEAc");
+                background-image: url("https://i.ibb.co/6X0bLgL/snacks-pattern.jpg");
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-attachment: fixed;
@@ -119,15 +134,15 @@ def app():
     confirm_pw = st.text_input("Confirm new password", type="password")
 
     if st.button("Update Password"):
-        if current_pw == st.session_state["password"]:
+        if current_pw == config["password"]:
             if new_pw == confirm_pw and new_pw.strip() != "":
-                st.session_state["password"] = new_pw
-                st.success("✅ Password updated successfully!")
+                config["password"] = new_pw
+                save_config(config)
+                st.success("✅ Password updated successfully! Restart the app to use new password.")
             else:
                 st.error("❌ New passwords do not match or are empty.")
         else:
             st.error("❌ Current password is incorrect.")
-            
 
 # --- Gatekeeper ---
 if not st.session_state["authenticated"]:
