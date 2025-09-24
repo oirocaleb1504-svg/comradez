@@ -1,84 +1,71 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
+import random
 from datetime import datetime
 
-# -----------------------------
-# Mock Sales Data Generator
-# -----------------------------
+# -------------------------------
+# Custom CSS for Theme
+# -------------------------------
+st.markdown("""
+    <style>
+        body {
+            background-color: #fff5eb; /* soft peach background */
+            color: #222;
+        }
+        .stApp {
+            background-color: #fff5eb;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Trebuchet MS', 'Comic Sans MS', sans-serif;
+            color: #ff6600; /* bright orange */
+        }
+        .big-title {
+            font-size: 48px !important;
+            font-weight: bold;
+            color: #ff6600;
+            text-align: center;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
+# Title & Subtitle
+# -------------------------------
+st.markdown("<h1 class='big-title'>🍊 Comradez Vending Report</h1>", unsafe_allow_html=True)
+st.markdown("### Smart automation for the future of vending 🥤")
+
+# -------------------------------
+# Mock Data Generator
+# -------------------------------
 def generate_mock_data():
-    products = ["Coke", "Water", "Chips", "Energy Drink"]
-    data = []
-    for p in products:
-        daily_sales = np.random.randint(5, 25)  # simulate daily sales
-        stock_left = np.random.randint(10, 50)
-        data.append([p, daily_sales, stock_left])
-    df = pd.DataFrame(data, columns=["Product", "Sales_Today", "Stock_Left"])
-    return df
+    products = ["Soda", "Water", "Juice", "Chips", "Candy"]
+    sales = [random.randint(10, 100) for _ in products]
+    stock = [random.randint(20, 200) for _ in products]
+    return pd.DataFrame({
+        "Product": products,
+        "Sales Today": sales,
+        "Stock Remaining": stock
+    })
 
-# -----------------------------
-# Inventory & Restock Logic
-# -----------------------------
-def check_restock(df):
-    alerts = []
-    for _, row in df.iterrows():
-        days_left = row["Stock_Left"] / max(row["Sales_Today"], 1)
-        if days_left < 3:
-            alerts.append(f"⚠️ **Restock {row['Product']} in {days_left:.1f} days**")
-    return alerts
-
-# -----------------------------
-# Pricing Suggestions
-# -----------------------------
-def pricing_suggestions(df):
-    suggestions = []
-    for _, row in df.iterrows():
-        if row["Sales_Today"] > 20:
-            suggestions.append(f"⬆️ Increase price of **{row['Product']}** by 5% (high demand)")
-        elif row["Sales_Today"] < 8:
-            suggestions.append(f"⬇️ Decrease price of **{row['Product']}** by 5% (low demand)")
-    return suggestions
-
-# -----------------------------
-# Streamlit Web App
-# -----------------------------
-st.markdown(
-    "<h1 style='color:#FF7300; font-family:cursive; text-align:center;'>🍊 Comradez Vending Report</h1>", 
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    "<p style='color:#FFFFFF; font-size:18px; text-align:center;'>Smart automation for the future of vending 🍹</p>", 
-    unsafe_allow_html=True
-)
-
-# Generate mock data
+# -------------------------------
+# Today's Report
+# -------------------------------
+st.header("📊 Today's Sales & Stock")
 df = generate_mock_data()
+st.dataframe(df, use_container_width=True)
 
-# Display table
-st.subheader("📊 Today's Sales & Stock")
-st.dataframe(df.style.background_gradient(cmap="Oranges"))
+# -------------------------------
+# Insights
+# -------------------------------
+st.header("🔎 Insights")
+best_seller = df.loc[df["Sales Today"].idxmax()]["Product"]
+low_stock = df.loc[df["Stock Remaining"].idxmin()]["Product"]
 
-# Restock Alerts
-st.subheader("🛒 Restock Alerts")
-alerts = check_restock(df)
-if alerts:
-    for a in alerts:
-        st.warning(a)
-else:
-    st.success("✅ All stock levels are healthy.")
+st.success(f"🔥 Best Seller Today: **{best_seller}**")
+st.warning(f"⚠️ Low Stock Alert: **{low_stock}** — restock soon!")
 
-# Pricing Suggestions
-st.subheader("💸 Pricing Suggestions")
-prices = pricing_suggestions(df)
-if prices:
-    for p in prices:
-        st.info(p)
-else:
-    st.success("✅ Pricing is optimal today.")
-
-# Daily Report Summary
-st.subheader("📑 Report Summary")
-st.write(f"**Date:** {datetime.now().strftime('%Y-%m-%d')}")
-st.write(f"**Total Items Sold Today:** {df['Sales_Today'].sum()}")
-st.write(f"**Total Revenue (est.):** KSh {df['Sales_Today'].sum() * 100}")
+# -------------------------------
+# Footer
+# -------------------------------
+st.markdown("---")
+st.caption(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Comradez Vending Automation 🍊")
