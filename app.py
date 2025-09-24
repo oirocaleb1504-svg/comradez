@@ -8,6 +8,37 @@ from datetime import datetime
 # -------------------------------
 st.markdown("""
     <style>
+       <script>
+  const ctx = document.getElementById('stockChart').getContext('2d');
+  const stockChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Chips', 'Cookies', 'Soda', 'Juice', 'Chocolate'],
+      datasets: [{
+        label: 'Stock Quantity',
+        data: [12, 19, 8, 15, 10], // replace with your actual stock numbers
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)'
+        ],
+        borderColor: 'rgba(0,0,0,0.8)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
         body {
             color: #000000; /* black text for readability */
         }
@@ -78,4 +109,5 @@ st.warning(f"⚠️ Low Stock Alert: **{low_stock}** — restock soon!")
 # -------------------------------
 st.markdown("---")
 st.caption(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Comradez Vending Automation 🍊")
+
 
