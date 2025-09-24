@@ -1,30 +1,39 @@
-# 🍊 Comradez Vending Report App
+# 🍊 Comradez Vending Automation
 
-🚀 This is the **Comradez Vending Automation Demo** — a system that shows how AI-powered automation can manage vending machines more efficiently.  
-Built with **Streamlit**, it demonstrates **inventory monitoring, restock alerts, pricing optimization, and automated reports**.
-
----
-
-## 🎯 Why It Matters
-- **Franchise Ready**: Investors can see how each machine is monitored in real-time.  
-- **Automated Pricing**: Suggests when to raise or lower prices based on demand.  
-- **Stock Alerts**: Predicts restock days to avoid lost sales.  
-- **Future AI Agent**: Can be scaled into full AI-driven operations.  
+Comradez is building the **future of smart vending machines** in Africa.  
+This project is a **demo dashboard** that shows how AI-powered automation can help optimize sales, restocking, and reporting.
 
 ---
 
-## 🛠 Features
-- 📊 Dashboard with daily sales & stock
-- 🛒 Restock alerts
-- 💸 Dynamic pricing suggestions
-- 📑 Auto-generated reports
-- 🖤🟠 Branded in **black + orange** with playful fonts
+## 🚀 Features
+- **Fanta-inspired theme** (bright, bold, and refreshing 🥤).
+- **Live dashboard**: Sales & stock tracking.
+- **Editable inventory input**: Add new purchases to keep records updated.
+- **Bar charts**: Visual representation of stock levels.
+- **AI-ready foundation**: Built for scaling into predictive restocking & smart franchise reporting.
 
 ---
 
-## 🚀 Run Locally
+## 🛠️ Tech Stack
+- [Python](https://www.python.org/)
+- [Streamlit](https://streamlit.io/) – for interactive web dashboards
+- [Matplotlib](https://matplotlib.org/) – for bar chart visualization
+- [Pandas](https://pandas.pydata.org/) – for data management
+
+---
+
+## 📊 Demo Use Case
+Imagine a vending machine network where:
+- The **owner/investor** sees live sales performance.
+- The **system highlights best-sellers** and warns about low stock.
+- **Restocking decisions** are automated to cut costs and maximize profits.
+
+This dashboard simulates that workflow.
+
+---
+
+## 🧑‍💻 How to Run
+Clone the repo:
 ```bash
-git clone https://github.com/YOUR_USERNAME/comradez.git
-cd comradez
-pip install -r requirements.txt
-streamlit run app.py
+git clone https://github.com/YOUR-USERNAME/comradez-vending.git
+cd comradez-vending
