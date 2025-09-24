@@ -73,3 +73,4 @@ st.subheader("Report Summary")
 st.write(f"Date: {datetime.now().strftime('%Y-%m-%d')}")
 st.write(f"Total Items Sold Today: {df['Sales_Today'].sum()}")
 st.write(f"Total Revenue (est.): KSh {df['Sales_Today'].sum() * 100}")
+
