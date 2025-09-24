@@ -44,7 +44,7 @@ def app():
     st.markdown("""
         <style>
             .stApp {
-                background-image: url("https://i.ibb.co/6X0bLgL/snacks-pattern.jpg");
+                background-image: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-photos%2Fblack-digital&psig=AOvVaw0pIoGgbFEwi36PqplObu_M&ust=1758784010128000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCID44YTw8I8DFQAAAAAdAAAAABAK");
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-attachment: fixed;
@@ -149,3 +149,4 @@ if not st.session_state["authenticated"]:
     login()
 else:
     app()
+
