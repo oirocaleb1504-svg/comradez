@@ -1,103 +1,116 @@
 import streamlit as st
 import pandas as pd
-import random
+import numpy as np
 from datetime import datetime
-import matplotlib.pyplot as plt
 
-# -------------------------------
-# Custom CSS (Fanta Theme + Fonts)
-# -------------------------------
+# --- Page Config ---
+st.set_page_config(
+    page_title="Comradez Vending Report",
+    page_icon="🥤",
+    layout="wide"
+)
+
+# --- Custom CSS ---
 st.markdown("""
     <style>
-        body {
-            color: #000000; /* black text */
-        }
+        /* Background wallpaper */
         .stApp {
-            background: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dvending%2Bmachine&psig=AOvVaw3SRacUn12BjYLst03gSaWv&ust=1758783622453000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLiXw9rp8I8DFQAAAAAdAAAAABAE");
-            background-size: 150px 150px;
-            background-repeat: repeat;
+            background-image: url("https://i.ibb.co/6X0bLgL/snacks-pattern.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        h1, h2, h3, h4 {
-            font-family: 'Trebuchet MS', sans-serif;
-            color: #ff6600; /* Fanta orange */
-        }
-        .big-title {
-            font-size: 50px !important;
+
+        /* Title style */
+        .main-title {
+            font-size: 48px;
             font-weight: bold;
-            color: #ff6600;
+            color: orange;
             text-align: center;
-            text-shadow: 2px 2px #fff;
         }
-        .block-container {
-            background-color: rgba(255, 230, 204, 0.9);
-            border-radius: 15px;
+
+        .slogan {
+            font-size: 20px;
+            font-style: italic;
+            color: black;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Tiles */
+        .tile {
+            background-color: #FFDAB9; /* peach */
             padding: 20px;
+            border-radius: 20px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: black; /* all text in tiles is black */
         }
     </style>
 """, unsafe_allow_html=True)
 
-# -------------------------------
-# Title
-# -------------------------------
-st.markdown("<h1 class='big-title'>🍊 Comradez Vending Report</h1>", unsafe_allow_html=True)
-st.markdown("### Automated snack vending insights with a Fanta vibe 🥤")
+# --- Title + Slogan ---
+st.markdown('<div class="main-title">Comradez Vending Report</div>', unsafe_allow_html=True)
+st.markdown('<div class="slogan">*Where snacking meets innovation*</div>', unsafe_allow_html=True)
 
-# -------------------------------
-# Mock Data Generator
-# -------------------------------
-def generate_mock_data():
-    products = ["Soda", "Water", "Juice", "Chips", "Candy", "Chocolate"]
-    sales = [random.randint(10, 100) for _ in products]
-    stock = [random.randint(20, 200) for _ in products]
-    return pd.DataFrame({
-        "Product": products,
-        "Sales Today": sales,
-        "Stock Remaining": stock
-    })
+# --- Editable Inventory Section ---
+st.subheader("🛒 Inventory Management")
+if "inventory" not in st.session_state:
+    st.session_state["inventory"] = pd.DataFrame(columns=["Item", "Quantity", "Date Added"])
 
-# -------------------------------
-# Editable Inventory Section
-# -------------------------------
-st.header("✏️ Update Inventory")
-with st.form("inventory_form"):
-    product_name = st.text_input("Enter product name:")
-    qty_bought = st.number_input("Enter quantity bought:", min_value=0, step=1)
-    submitted = st.form_submit_button("Add to Inventory")
+item = st.text_input("Enter snack name")
+qty = st.number_input("Enter quantity", min_value=1, step=1)
+if st.button("Add to Inventory"):
+    if item.strip() != "":
+        new_entry = pd.DataFrame({
+            "Item": [item],
+            "Quantity": [qty],
+            "Date Added": [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+        })
+        st.session_state["inventory"] = pd.concat([st.session_state["inventory"], new_entry], ignore_index=True)
+        st.success(f"Added {qty} units of {item} to inventory.")
+    else:
+        st.warning("Please enter a snack name before adding.")
 
-if submitted and product_name:
-    st.success(f"✅ {qty_bought} units of **{product_name}** added to inventory!")
+st.dataframe(st.session_state["inventory"])
 
-# -------------------------------
-# Today's Report
-# -------------------------------
-st.header("📊 Today's Sales & Stock")
-df = generate_mock_data()
-st.dataframe(df, use_container_width=True)
+# --- Download Inventory CSV ---
+if not st.session_state["inventory"].empty:
+    csv_inventory = st.session_state["inventory"].to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="📥 Download Inventory Report (CSV)",
+        data=csv_inventory,
+        file_name="inventory_report.csv",
+        mime="text/csv"
+    )
 
-# -------------------------------
-# Stock Bar Chart
-# -------------------------------
-st.subheader("📦 Stock Levels (Bar Chart)")
-fig, ax = plt.subplots()
-ax.bar(df["Product"], df["Stock Remaining"], color="#ff6600")
-ax.set_ylabel("Units Remaining")
-ax.set_title("Stock by Product")
-st.pyplot(fig)
+# --- Sales Data Simulation ---
+st.subheader("📊 Sales Report")
+data = pd.DataFrame({
+    "Product": ["Soda", "Chips", "Candy", "Water", "Juice"],
+    "Units Sold": np.random.randint(20, 100, 5),
+    "Revenue (KSh)": np.random.randint(500, 3000, 5)
+})
 
-# -------------------------------
-# Insights
-# -------------------------------
-st.header("🔎 Insights")
-best_seller = df.loc[df["Sales Today"].idxmax()]["Product"]
-low_stock = df.loc[df["Stock Remaining"].idxmin()]["Product"]
+# Display in tiles
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.markdown(f'<div class="tile">Total Sales<br>{data["Units Sold"].sum()}</div>', unsafe_allow_html=True)
+with col2:
+    st.markdown(f'<div class="tile">Total Revenue<br>KSh {data["Revenue (KSh)"].sum()}</div>', unsafe_allow_html=True)
+with col3:
+    st.markdown(f'<div class="tile">Top Product<br>{data.loc[data["Units Sold"].idxmax(), "Product"]}</div>', unsafe_allow_html=True)
 
-st.success(f"🔥 Best Seller Today: **{best_seller}**")
-st.warning(f"⚠️ Low Stock Alert: **{low_stock}** — restock soon!")
+# Table
+st.table(data)
 
-# -------------------------------
-# Footer
-# -------------------------------
-st.markdown("---")
-st.caption(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Comradez Vending Automation 🍊")
-
+# --- Download Sales CSV ---
+csv_sales = data.to_csv(index=False).encode("utf-8")
+st.download_button(
+    label="📥 Download Sales Report (CSV)",
+    data=csv_sales,
+    file_name="sales_report.csv",
+    mime="text/csv"
+)
