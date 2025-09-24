@@ -5,12 +5,12 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 
 # -------------------------------
-# Custom CSS for Fanta-inspired Theme
+# Custom CSS (Fanta Theme + Fonts)
 # -------------------------------
 st.markdown("""
     <style>
         body {
-            color: #000000; /* Black text for readability */
+            color: #000000; /* black text */
         }
         .stApp {
             background: url("https://i.ibb.co/W5KzPzj/snack-pattern.png");
@@ -19,8 +19,8 @@ st.markdown("""
             background-attachment: fixed;
         }
         h1, h2, h3, h4 {
-            font-family: 'Baloo 2', cursive;
-            color: #ff6600; /* Bright Fanta orange */
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #ff6600; /* Fanta orange */
         }
         .big-title {
             font-size: 50px !important;
@@ -30,16 +30,15 @@ st.markdown("""
             text-shadow: 2px 2px #fff;
         }
         .block-container {
-            background-color: rgba(255, 230, 204, 0.9); /* Fanta peach */
+            background-color: rgba(255, 230, 204, 0.9);
             border-radius: 15px;
             padding: 20px;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap" rel="stylesheet">
 """, unsafe_allow_html=True)
 
 # -------------------------------
-# Title & Subtitle
+# Title
 # -------------------------------
 st.markdown("<h1 class='big-title'>🍊 Comradez Vending Report</h1>", unsafe_allow_html=True)
 st.markdown("### Automated snack vending insights with a Fanta vibe 🥤")
